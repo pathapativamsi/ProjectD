@@ -25,7 +25,7 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.UserName);
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.UserName.ToLower());
             if (user == null) return Unauthorized("Invalid Username");
             using var hmac = new HMACSHA512(user.PasswordSalt);
             var calculatedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
@@ -45,11 +45,11 @@ namespace API.Controllers
         {
             var hmac = new HMACSHA512();
 
-            if (await isExists(registerDto.UserName)) return BadRequest("user already exists");
+            if (await isExists(registerDto.UserName.ToLower())) return BadRequest("user already exists");
 
             var user = new AppUser
             {
-                UserName = registerDto.UserName,
+                UserName = registerDto.UserName.ToLower(),
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
                 PasswordSalt = hmac.Key
             };
