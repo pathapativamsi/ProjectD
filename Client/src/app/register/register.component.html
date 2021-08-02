@@ -1,0 +1,17 @@
+<form class="form-group" #loginForm="ngForm" (ngSubmit)="onRegister()">
+  <h2 class="text-center">Register</h2>
+  <hr>
+
+  <input
+  name="userName"
+  [(ngModel)]="registerFormModel.userName"
+  class="form-control mr-2" type="text" placeholder="username" aria-label="Search">
+  <input
+  name="password"
+  [(ngModel)]="registerFormModel.Password"
+  class="form-control mt-2" type="password" placeholder="Password" aria-label="Search">
+  <div class="form-group text-center mt-2">
+    <input class="btn btn-success mr-2" type="submit" value="submit">
+    <button class="btn btn-danger mr-2" (click)="cancel()">Cancel</button>
+  </div>
+</form>
